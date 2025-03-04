@@ -1,30 +1,81 @@
-import { StyleSheet, Text, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import React from 'react'
-import { Button } from 'react-native-paper'
-import { getAuth } from "firebase/auth";
+import React, { useState, useEffect } from "react";
+import { View, FlatList, StyleSheet } from "react-native";
+import { Text } from "react-native-paper";
+import { SafeAreaView } from "react-native-safe-area-context";
+import ProductCard from "../components/ProductCard";
+import { db } from "../../../config/util/firebaseConnection";
+import { collection, getDocs } from "firebase/firestore";
 
 
 const Home = () => {
-    const auth = getAuth();
-  return (
-    <SafeAreaView style={styles.container}>
-      <Text>Home</Text>
-      <Button mode="contained" style={styles.button} onPress={() => {auth.signOut()}}>Cerrar Sesión</Button>
-    </SafeAreaView>
-  )
-}
+const [products, setProducts] = useState([]);
+const [loading, setLoading] = useState(true);
+  
+  useEffect(() => {
+    (async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "products"));
+        const products = [];
+        querySnapshot.forEach((doc) => {
+          products.push(doc.data());
+        });
+        setProducts(products);
+      } catch (error) {
+        console.error("Error consultando productos", error);
+      } finally {
+        setLoading(false);
+      }
+    })();
+  },[]);
 
-export default Home
+  //ALTERNATIVA
+  // useEffect(() => {
+  //   const fetchProducts = async () => {
+  //     try {
+  //       const querySnapshot = await getDocs(collection(db, "products"));
+  //       const products = querySnapshot.docs.map(doc => doc.data());
+  //       setProducts(products);
+  //     } catch (error) {
+  //       console.error("Error consultando productos", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  
+  //   fetchProducts();
+  // }, []);
+
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <Text style={styles.title}>Productos</Text>
+      <View style={styles.container}>
+        <FlatList
+          data={products}
+          renderItem={ProductCard}
+          keyExtractor={(item) => item.id}
+          numColumns={2}
+          contentContainerStyle={styles.list}
+        />
+      </View>
+    </SafeAreaView>
+  );
+};
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 12,
-    },
-    button: {
-        marginTop: 16,
-    }
-})
+  container: {
+    paddingStart: 10,
+    paddingEnd: 10,
+    backgroundColor: "white",
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: "bold",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  list: {
+    justifyContent: "center",
+  },
+});
+
+export default Home;

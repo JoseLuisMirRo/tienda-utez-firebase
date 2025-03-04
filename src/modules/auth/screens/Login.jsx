@@ -23,7 +23,6 @@ const Login = ({navigation}) => {
             signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 const user = userCredential.user;
-                Alert.alert(`Bienvenido ${user.email}`);
             })
             .catch((error) => {
                 console.log(error);
@@ -73,6 +72,7 @@ const Login = ({navigation}) => {
                 />
                 <Text style={styles.text}>Tienda UTEZ</Text>
             </View>
+            <View style={styles.inputContainer}>
                 <Text variant="titleMedium" style={styles.text}>Usuario</Text>
                 <TextInput
                     style={styles.input}
@@ -90,6 +90,7 @@ const Login = ({navigation}) => {
                 />
                 <Button mode="contained" style={styles.button} labelStyle={{color: '#FFFFFF', fontWeight: 'bold'}} onPress={handleLogin}>Iniciar Sesión</Button>
                 <Button mode="text" style={styles.link} labelStyle={{color: '#FFFFFF', fontWeight: 'bold'}}onPress={() => navigation.navigate('CreateAccount')}>Crear cuenta</Button>
+            </View>
             </Card.Content>
         </Card>
     </View>
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         padding: 16,
-        backgroundColor: '#FFFFFF', // Fondo blanco
+        backgroundColor: '#FFFFFF', 
     },
     logoContainer: {
         justifyContent: 'center',

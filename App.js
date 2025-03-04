@@ -2,7 +2,7 @@
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { NavigationContainer } from "@react-navigation/native";
-import LoginStack from './src/navigation/auth/LoginStack';
+import LoginStack from './src/navigation/stack/auth/LoginStack';
 import AppStack from './src/navigation/stack/AppStack';
 import { useEffect, useState } from 'react';
 import { app, auth, db, storage } from './src/config/util/firebaseConnection';

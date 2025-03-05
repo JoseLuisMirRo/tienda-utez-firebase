@@ -5,7 +5,7 @@ import React from 'react'
 export default function ProductCard({ item }) {
   return (
     <Card style={styles.card}>
-      <Card.Cover source={{ uri: item.imageURL }} />
+      <Card.Cover source={{ uri: item.imageURL }} style={{backgroundColor: 'white'}}/>
       <Card.Content>
         <Text variant="titleMedium">{item.name}</Text>
         <Text variant="bodyMedium">${item.price}</Text>
